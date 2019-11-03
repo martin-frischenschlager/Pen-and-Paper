@@ -11,7 +11,7 @@ def agemodify(shareminus,app_minus,edu_bonus):
     if shareminus > sharesum: shareminus = sharesum
     if app_minus > player.stats['APP']: app_minus = player.stats['APP']
     print("Alright, then we need to remove a total of",shareminus,"points from STR and CON and DEX as well as",app_minus,"points from APP.")
-    print("But you get",edu_bonus,"chances at a better EDU stat.")
+    print("BUT: You get",edu_bonus,"chances at a better EDU stat.")
     minus1 = int(input("How many points do you want me to remove from STR? (0-"+str(shareminus)+") "))
     player.stats['STR'] -= minus1
     minus2 = int(input("How many points from CON? (0-"+str(shareminus-minus1)+") "))
@@ -35,20 +35,15 @@ player = cthulu.Character(name, playedBy)
 
 print("Alright,",playedBy+"! Let's start by determining",name+"'s stats!")
 print("First up, do you want to roll dice yourself?")
-loop = True
-while loop:
-    roll = input("[Y/N] ")
-    if roll == 'Y':
-        roll = True
-        loop = False
-        print("Alright, get your dice ready, here we go!")
-    elif roll == 'N':
-        roll = False
-        loop = False
-        print("Alright, here we go!")
-    else:
-        print("Sorry, I didn't recognize that, try again.")
 
+#self or automatic dice throwing?
+while True:
+    roll = input("[Y/N] ")
+    if roll == 'Y': roll = True; print("Alright, get your dice ready, here we go!"); break
+    elif roll == 'N': roll = False; print("Alright, here we go!"); break
+    else: print("Sorry, I didn't recognize that, try again.")
+
+#initialize stats
 if roll:
     pass
 else:

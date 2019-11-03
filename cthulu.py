@@ -31,7 +31,21 @@ class Character:
     
         
 def W(faces=100,throws=1, mult=1, add=0):
+    """ default returns a 100-sided dicethrow-result, 
+    options include No. of faces, No. of summmed throws,
+    multiplicator of result, offset addition to the result """
     list = []
     for i in range(throws):
         list.append(random.randint(1,faces))
     return (sum(list)+add)*mult
+
+def intInput(a,b):
+    """ asks for an Integer-input in [a,b], returns input once correctly entered """
+    while True:
+        inp = input()
+        try:
+            inp_int = int(inp)
+            if not a <= inp_int <= b: print("Input must be between",a,"and",b); raise ValueError 
+            break
+        except: print("Please try again!")
+    return inp_int
