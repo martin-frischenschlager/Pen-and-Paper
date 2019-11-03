@@ -39,13 +39,41 @@ def W(faces=100,throws=1, mult=1, add=0):
         list.append(random.randint(1,faces))
     return (sum(list)+add)*mult
 
-def intInput(a,b):
+def intInput(a,b,inputname="Input",inputtext=""):
     """ asks for an Integer-input in [a,b], returns input once correctly entered """
     while True:
-        inp = input()
+        inp = input(inputtext)
         try:
             inp_int = int(inp)
-            if not a <= inp_int <= b: print("Input must be between",a,"and",b); raise ValueError 
+            if not a <= inp_int <= b: print(inputname,"must be between",a,"and",b); raise ValueError 
             break
         except: print("Please try again!")
     return inp_int
+
+def agemodify(self,subtr,appmin,edubon):
+    """ Modifies the STR,CON,DEX-stats according to age """
+    
+    statsum = sum((self.stats['STR'],self.stats['CON'],self.stats['DEX']))
+    print("Alright, then we need to remove a total of",subtr,"points from STR and CON and DEX as well as",appmin,"points from APP.")
+    print("BUT: You get",edubon,"chances at a better EDU stat.")
+    
+    self.stats['APP'] -= min(self.stats['APP'],appmin)
+        
+    if subtr >= statsum:
+        print("Sum of stats smaller than or equal", subtr, "all three stats set to zero.")
+        self.stats['STR'] = 0; self.stats['CON'] = 0; self.stats['DEX'] = 0
+        return
+    
+    lower = max(0,subtr + self.stats['STR'] - statsum)
+    upper = min(subtr,self.stats['STR'])
+    min1 = intInput(lower,upper,"Value","How many points do you want me to remove from STR? ("+str(lower)+"-"+str(upper)+") ")
+    self.stats['STR'] -= min1; subtr -= min1
+    
+    if subtr == (self.stats['CON']+self.stats['DEX']):
+        print("Remaining stats set to zero.")
+        self.stats['CON'] = 0; self.stats['DEX'] = 0
+    lower = max(0,subtr + self.stats['STR'] + self.stats['CON'] + min1 - statsum)
+    upper = min(subtr,self.stats['DEX'])
+    min2 = intInput(lower,upper,"Value","How many points from CON? ("+str(lower)+"-"+str(upper)+") ")
+    self.stats['CON'] -= min2; subtr -= min2
+    self.stats['DEX'] -= subtr
